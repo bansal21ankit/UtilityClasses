@@ -20,7 +20,7 @@ import java.io.PrintWriter;
  * <p>
  * <br><i>Author : <b>Ankit Bansal</b></i>
  * <br><i>Created Date : <b>30 Mar 2017</b></i>
- * <br><i>Modified Date : <b>31 Mar 2017</b></i>
+ * <br><i>Modified Date : <b>4 Apr 2017</b></i>
  */
 public final class LogUtility {
     private static final String TAG = LogUtility.class.getSimpleName();
@@ -62,7 +62,7 @@ public final class LogUtility {
         }
     }
 
-    private void addFileEntry(final String tag, final String message, final Throwable error) {
+    private synchronized void addFileEntry(final String tag, final String message, final Throwable error) {
         if (!isFileLoggingEnabled || mLogFile == null) {
             debug(TAG, "File logging disabled or not initialized");
             return;
@@ -126,10 +126,12 @@ public final class LogUtility {
     // ======================== TOAST related methods ======================== //
 
     public static void toastLong(Context context, @StringRes int msgId) {
-        if (context != null && msgId != 0) Toast.makeText(context, msgId, Toast.LENGTH_LONG).show();
+        if (context != null && msgId != 0 && msgId != -1) // Show if msg is valid resource
+            Toast.makeText(context, msgId, Toast.LENGTH_LONG).show();
     }
 
     public static void toastShort(Context context, @StringRes int msgId) {
-        if (context != null && msgId != 0) Toast.makeText(context, msgId, Toast.LENGTH_SHORT).show();
+        if (context != null && msgId != 0 && msgId != -1) // Show if msg is valid resource
+            Toast.makeText(context, msgId, Toast.LENGTH_SHORT).show();
     }
 }
